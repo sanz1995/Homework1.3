@@ -52,8 +52,9 @@ joint = coches[,c(4,6)]
 
 #2.1 Distribucion (horsepower, acceleration)
 library(ggplot2)
-ggplot(coches, aes(x=horsepower, y=acceleration))+geom_bar(stat="identity")
+#ggplot(coches, aes(x=horsepower, y=acceleration))+geom_bar(stat="identity")
 
+#plot(coches$horsepower,coches$acceleration)
 
 
 #2.2 Outliers (horsepower, acceleration)
@@ -65,6 +66,22 @@ plot(coches$horsepower,coches$acceleration,pch=16,col=(pcout(joint)$wfinal01+2))
 library("MVN")
 mardiaTest(cbind(coches[,4],coches[,6]), qqplot=T)
 mardiaTest(log(cbind(coches[,4],coches[,6])), qqplot=T)
+
+
+
+#without outliers
+outliers = pcout(coches[,c(4,6)])$wfinal01
+outliers
+
+#horsepower without outliers
+hp2 = coches$horsepower[outliers==1]
+#acceleration without outliers
+ac2 = coches$acceleration[outliers==1]
+
+
+mardiaTest(cbind(hp2,ac2), qqplot=T)
+mardiaTest(log(cbind(hp2,ac2)), qqplot=T)
+
 
 #3 Choose a subset of 4 or 5 quantitative variables and explore linear relationships through:
 #       1. R matrix of pairwise correlations.
@@ -109,3 +126,8 @@ pvalue1
 #two-tailed test
 pvalue2 = sum(replicate(1000, abs(cor(coches$horsepower,sample(coches$acceleration))) > abs(r)))/1000
 pvalue2
+
+#permutation test without outliers
+pvalue3 = sum(replicate(1000, abs(cor(hp2,sample(ac2))) > abs(r)))/1000
+pvalue3
+
