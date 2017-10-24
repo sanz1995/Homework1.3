@@ -96,3 +96,16 @@ sort(r2multv(cuant))
 #3.5
 eigen(cor(cuant))
 
+
+
+# Permutation test. Hipotesis = correlación es igual a 0
+
+r = cor(coches$horsepower,coches$acceleration)
+
+#upper-tail test
+pvalue1 = sum(replicate(1000, cor(coches$horsepower,sample(coches$acceleration)) > r))/1000
+pvalue1
+
+#two-tailed test
+pvalue2 = sum(replicate(1000, abs(cor(coches$horsepower,sample(coches$acceleration))) > abs(r)))/1000
+pvalue2
